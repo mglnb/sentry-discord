@@ -1,11 +1,13 @@
-const fetch = require('node-fetch');
+const fetch = require("node-fetch");
+require("dotenv").config();
 
+console.log(process.env.WEBHOOK);
 const COLORS = {
-  debug: parseInt('fbe14f', 16),
-  info: parseInt('2788ce', 16),
-  warning: parseInt('f18500', 16),
-  error: parseInt('e03e2f', 16),
-  fatal: parseInt('d20f2a', 16),
+  debug: parseInt("fbe14f", 16),
+  info: parseInt("2788ce", 16),
+  warning: parseInt("f18500", 16),
+  error: parseInt("e03e2f", 16),
+  fatal: parseInt("d20f2a", 16),
 };
 
 module.exports = async (request, response) => {
@@ -13,19 +15,19 @@ module.exports = async (request, response) => {
     const { body } = request;
 
     const payload = {
-      username: 'Sentry',
+      username: "Sentry",
       avatar_url: `https://raw.githubusercontent.com/IanMitchell/sentry-discord/master/sentry-icon.png`,
       embeds: [
         {
           title: body.project_name,
-          type: 'rich',
+          type: "rich",
           description: body.message,
           url: body.url,
           timestamp: new Date(body.event.received * 1000).toISOString(),
           color: COLORS[body.level] || COLORS.error,
           footer: {
-            icon_url: 'https://github.com/fluidicon.png',
-            text: 'ianmitchell/sentry-discord',
+            icon_url: "https://github.com/fluidicon.png",
+            text: "mglnb/sentry-discord",
           },
           fields: [],
         },
@@ -34,7 +36,7 @@ module.exports = async (request, response) => {
 
     if (body.event.user) {
       payload.embeds[0].fields.push({
-        name: '**User**',
+        name: "**User**",
         value: body.event.user.username,
       });
     }
@@ -50,9 +52,9 @@ module.exports = async (request, response) => {
     }
 
     fetch(process.env.WEBHOOK, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(payload),
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     });
   } catch (err) {
     console.error(err);

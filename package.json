@@ -11,9 +11,11 @@
   "license": "MIT",
   "main": "index.js",
   "scripts": {
-    "start": "micro"
+    "start": "micro --port 3030"
   },
   "dependencies": {
+    "dotenv": "^8.2.0",
+    "micro": "^9.3.4",
     "node-fetch": "^2.2.0"
   }
 }
